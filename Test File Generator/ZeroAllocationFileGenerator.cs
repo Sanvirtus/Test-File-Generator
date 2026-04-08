@@ -1,6 +1,4 @@
-﻿using System;
-using System.Buffers.Text;
-using System.IO;
+﻿using System.Buffers.Text;
 using Test_File_Generator;
 
 public static class ZeroAllocationFileGenerator
@@ -64,9 +62,11 @@ public static class ZeroAllocationFileGenerator
             {
                 fileStream.Write(buffer, 0, offset);
             }
+
+            Display.PrintMemoryUsage();
         }
 
-        Display.PrintLineBlueText("\n\nSummary");
+        Display.PrintLineBlueText("\nSummary");
         Console.WriteLine($"- Lines Generated: {lineCountStatistics}");
         Console.WriteLine($"- Min Number: {minNumberStatistics}");
         Console.WriteLine($"- Max Number: {maxNumberStatistics}");

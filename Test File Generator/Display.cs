@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 
 namespace Test_File_Generator;
 
@@ -22,7 +20,7 @@ public static class Display
 
     public static void PrintOutputFileName(string fileName)
     {
-        Console.Write("Output: ");
+        Console.Write("Output file name: ");
         SetGreenConsoleColor();
         Console.WriteLine($"{fileName}");
         ResetConsoleColor();
@@ -41,7 +39,9 @@ public static class Display
 
         Console.Write("- Full Path: ");
         PrintLineYellowText($"{Path.GetFullPath(filePath)}");
+        PrintPeakMemoryUsage();
 
+        Console.WriteLine("\nPress any key to exit...");
         Console.ReadKey();
     }
 
@@ -56,6 +56,40 @@ public static class Display
         var availableGb = driveInfo.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0;
         Console.Write("- Free Space: ");
         PrintLineYellowText($"{driveInfo.AvailableFreeSpace} bytes ({availableGb:F2} GB)");
+    }
+
+    public static void PrintMemoryUsage()
+    {
+        using var currentProcess = Process.GetCurrentProcess();
+
+        var managedMemory = GC.GetTotalMemory(forceFullCollection: false);
+        var workingSet = currentProcess.WorkingSet64;
+
+        PrintLineBlueText("\nMemory Usage");
+        Console.Write("- Managed Heap: ");
+        PrintLineYellowText($"{managedMemory / 1024.0 / 1024.0:F2} MB");
+        Console.Write("- Working Set:  ");
+        PrintLineYellowText($"{workingSet / 1024.0 / 1024.0:F2} MB");
+
+        Console.Write("- GC Gen 0: ");
+        PrintLineYellowText($"{GC.CollectionCount(0)}");
+        Console.Write("- GC Gen 1: ");
+        PrintLineYellowText($"{GC.CollectionCount(1)}");
+        Console.Write("- GC Gen 2: ");
+        PrintLineYellowText($"{GC.CollectionCount(2)}");
+    }
+
+    private static void PrintPeakMemoryUsage()
+    {
+        using var currentProcess = Process.GetCurrentProcess();
+
+        var peakMemoryBytes = currentProcess.PeakWorkingSet64;
+        var peakMemoryMb = peakMemoryBytes / 1024.0 / 1024.0;
+
+        PrintLineBlueText("\nMemory Performance:");
+        Console.Write("- Peak Working Set (Max RAM used): ");
+
+        PrintLineYellowText($"{peakMemoryMb:F2} MB");
     }
 
     public static void PrintLineBlueText(string text)
