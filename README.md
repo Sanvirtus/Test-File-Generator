@@ -28,3 +28,6 @@ Examples of lines from the generated file:
 23) 161101023. I haven't come up with a name or color for this fruit
 24) 734811146. Something something something dark side
 25) 77977688. Dragonfruit looks like an alien
+```
+Here's what it looks like:
+<img width="1115" height="628" alt="image" src="https://github.com/user-attachments/assets/51168c1f-a892-4964-825b-7eb9dcc28e2a" />
